@@ -1,2 +1,2 @@
 # Yenigma-2
- a second attempt on Yenigma
+ A second attempt on Yenigma.
