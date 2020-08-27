@@ -1,1 +1,2 @@
-from yenigma import Yenigma
+from Yenigma.yenigma import Yenigma
+from Yenigma import randomish
