@@ -37,9 +37,28 @@ class Yenigma:
         self.rotors[ring] = temp_rotor
         return
 
+    def create_reflector(self, key):
+        self.randomish.set_seed(key)
+
+        temp_reflector = dict()
+        temp_char = list(self.ring_chars)
+        while len(temp_char):
+            a = self.randomish.random_int(len(temp_char))
+            b = self.randomish.random_int(len(temp_char))
+            temp_reflector[temp_char[a]] = temp_char[b]
+            temp_reflector[temp_char[b]] = temp_char[a]
+            del temp_char[a]
+            try:
+                del temp_char[b]
+            except IndexError:
+                pass
+        self.reflector = temp_reflector
+
+        return
+
     def rotor_f(self, char, ring):
         if (loc := self.ring_chars.find(char)) == -1:
-            return ""
+            return
         else:
             return self.rotors[ring][loc]
 
@@ -47,13 +66,13 @@ class Yenigma:
         if char in self.ring_chars:
             return self.rotors[ring][self.ring_chars.index(char)]
         else:
-            return ""
+            return
 
     def reflect(self, char):
         if char in self.ring_chars:
             return self.reflector[char]
         else:
-            return ""
+            return
 
     def rotate(self, ring, quantity=1):
         if quantity <= 1:
