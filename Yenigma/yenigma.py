@@ -1,7 +1,7 @@
 class Yenigma:
     import warnings
     from typing import Union
-    from Yenigma import randomish
+    import randomish
 
     def __init__(self):
         self.set_base(3)
@@ -67,7 +67,7 @@ class Yenigma:
 
         return
 
-    def set_base(self, keys: Union[list, tuple]):
+    def rotor_base(self, keys: Union[list, tuple]):
         for rotor in range(len(self.rotors)):
             self.rotate(rotor, quantity=keys[rotor])
 
