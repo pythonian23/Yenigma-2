@@ -57,7 +57,7 @@ class Yenigma:
 
         return
 
-    def create_pb(self, link: list):
+    def create_pb(self, link: Union[list, tuple]):
         temp_pb = dict()
         for two in link:
             if (two[0] in self.ring_chars) and (two[1] in self.ring_chars):
@@ -67,8 +67,13 @@ class Yenigma:
 
         return
 
+    def set_base(self, keys: Union[list, tuple]):
+        for rotor in range(len(self.rotors)):
+            self.rotate(rotor, quantity=keys[rotor])
+
     def rotor_f(self, char, ring):
-        if (loc := self.ring_chars.find(char)) == -1:
+        loc = self.ring_chars.find(char)
+        if loc == -1:
             return
         else:
             return self.rotors[ring][loc]
