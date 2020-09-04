@@ -1,7 +1,7 @@
 class Yenigma:
     import warnings
     from typing import Union
-    from Yenigma import randomish
+    import randomish
 
     def __init__(self):
         self.set_base(3)
