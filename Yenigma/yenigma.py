@@ -13,6 +13,7 @@ class Yenigma:
         self.rotors = [list(self.ring_chars)] * self.ring_count
         self.rotations = [0]*self.ring_count
         self.reflector = dict(zip(self.ring_chars, self.ring_chars))
+        self.plugboard = dict()
         self.full_set = [self.rotors, self.reflector]
 
         return self.full_set
@@ -56,6 +57,16 @@ class Yenigma:
 
         return
 
+    def create_pb(self, link: list):
+        temp_pb = dict()
+        for two in link:
+            if (two[0] in self.ring_chars) and (two[1] in self.ring_chars):
+                temp_pb[two[1]] = two[0]
+                temp_pb[two[0]] = two[1]
+        self.plugboard = temp_pb
+
+        return
+
     def rotor_f(self, char, ring):
         if (loc := self.ring_chars.find(char)) == -1:
             return
@@ -73,6 +84,12 @@ class Yenigma:
             return self.reflector[char]
         else:
             return
+
+    def reroute(self, char):
+        try:
+            return self.plugboard[char]
+        except KeyError:
+            return char
 
     def rotate(self, ring, quantity=1):
         if quantity <= 1:
