@@ -97,19 +97,15 @@ class Yenigma:
             return char
 
     def rotate(self, ring, quantity=1):
-        if quantity <= 1:
-            self.rotors[ring].append(self.rotors[ring].pop())
-        else:
-            for i in range(quantity):
-                self.rotors[ring].append(self.rotors[ring].pop())
+        for i in range(quantity):
+            self.rotors[ring].append(self.rotors[ring].pop(0))
 
         return self.rotors[ring]
 
 
 if __name__ == '__main__':
     yenigma = Yenigma()
-
-    print(yenigma.create_rotors(((1, 2, 3), 2)))
+    print(yenigma.rotate(0))
     while True:
         try:
             print(eval(input()))
