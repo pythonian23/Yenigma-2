@@ -10,7 +10,7 @@ class Yenigma:
     def set_base(self, number_of_rings, ring_set="abcdefghijklmnopqrstuvwxyz"):
         self.ring_chars = ring_set
         self.ring_count = number_of_rings
-        self.rotors = [list(self.ring_chars)] * self.ring_count
+        self.rotors = [list(self.ring_chars) for _ in range(self.ring_count)]
         self.rotations = [0]*self.ring_count
         self.reflector = dict(zip(self.ring_chars, self.ring_chars))
         self.plugboard = dict()
@@ -68,7 +68,7 @@ class Yenigma:
         return
 
     def rotor_base(self, keys: Union[list, tuple]):
-        for rotor in range(len(self.rotors)):
+        for rotor in range(len(keys)):
             self.rotate(rotor, quantity=keys[rotor])
 
     def rotor_f(self, char, ring):
@@ -97,19 +97,15 @@ class Yenigma:
             return char
 
     def rotate(self, ring, quantity=1):
-        if quantity <= 1:
-            self.rotors[ring].append(self.rotors[ring].pop())
-        else:
-            for i in range(quantity):
-                self.rotors[ring].append(self.rotors[ring].pop())
+        for i in range(quantity):
+            self.rotors[ring].append(self.rotors[ring].pop(0))
+            print(ring)
 
         return self.rotors[ring]
 
 
 if __name__ == '__main__':
     yenigma = Yenigma()
-
-    print(yenigma.create_rotors(((1, 2, 3), 2)))
     while True:
         try:
             print(eval(input()))
