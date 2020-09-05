@@ -99,7 +99,6 @@ class Yenigma:
     def rotate(self, ring, quantity=1):
         for i in range(quantity):
             self.rotors[ring].append(self.rotors[ring].pop(0))
-            print(ring)
 
         return self.rotors[ring]
 
