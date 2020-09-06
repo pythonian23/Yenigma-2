@@ -71,6 +71,11 @@ class Yenigma:
         for rotor in range(len(keys)):
             self.rotate(rotor, quantity=keys[rotor])
 
+    def rotor_start(self, keys: Union[list, tuple]):
+        for rotor in range(len(keys)):
+            self.rotate(rotor, quantity=keys[rotor])
+            self.add_rotation(rotor, keys[rotor])
+
     def rotor_f(self, char, ring):
         loc = self.ring_chars.find(char)
         if loc == -1:
