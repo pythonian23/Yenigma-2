@@ -102,6 +102,18 @@ class Yenigma:
 
         return self.rotors[ring]
 
+    def add_rotation(self, ring, quantity=1):
+        self.rotations[ring] += quantity
+        self.check_rotation()
+
+        return self.rotations
+
+    def check_rotation(self):
+        for ring in range(len(self.rotors)):
+            while self.rotations[ring] >= len(self.ring_chars):
+                self.rotations[ring] -= len(self.ring_chars)
+                if ring != (len(self.rotors)-1):
+                    self.rotations[ring + 1] += 1
 
 if __name__ == '__main__':
     yenigma = Yenigma()
