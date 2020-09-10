@@ -11,14 +11,14 @@ class Yenigma:
         self.ring_chars = ring_set
         self.ring_count = number_of_rings
         self.rotors = [list(self.ring_chars) for _ in range(self.ring_count)]
-        self.rotations = [0]*self.ring_count
+        self.rotations = [0] * self.ring_count
         self.reflector = dict(zip(self.ring_chars, self.ring_chars))
         self.plugboard = dict()
         self.full_set = [self.rotors, self.reflector]
 
         return self.full_set
 
-    def create_rotors(self, keys: Union[tuple, list],):
+    def create_rotors(self, keys: Union[tuple, list], ):
         if (len(keys)) != 2 or (len(keys[0]) != self.ring_count):
             self.warnings.warn("The format isn't correct. Unable to create rotors.")
             return None
@@ -76,14 +76,14 @@ class Yenigma:
             self.rotate(rotor, quantity=keys[rotor])
             self.add_rotation(rotor, keys[rotor])
 
-    def rotor_f(self, char, ring):
+    def rotor_f(self, char, ring):  # PROBLEM IS HERE
         loc = self.ring_chars.find(char)
         if loc == -1:
             return
         else:
             return self.rotors[ring][loc]
 
-    def rotor_b(self, char, ring):
+    def rotor_b(self, char, ring):  # PROBLEM IS HERE
         if char in self.ring_chars:
             return self.rotors[ring][self.ring_chars.index(char)]
         else:
@@ -97,9 +97,9 @@ class Yenigma:
 
     def reroute(self, char):
         try:
-            return self.plugboard[char]
+            return self.plugboard[char], True
         except KeyError:
-            return char
+            return char, False
 
     def rotate(self, ring, quantity=1):
         for i in range(quantity):
@@ -108,6 +108,7 @@ class Yenigma:
         return self.rotors[ring]
 
     def add_rotation(self, ring, quantity=1):
+        self.rotate(ring, quantity=quantity)
         self.rotations[ring] += quantity
         self.check_rotation()
 
@@ -117,11 +118,34 @@ class Yenigma:
         for ring in range(len(self.rotors)):
             while self.rotations[ring] >= len(self.ring_chars):
                 self.rotations[ring] -= len(self.ring_chars)
-                if ring != (len(self.rotors)-1):
+                if ring != (len(self.rotors) - 1):
                     self.rotations[ring + 1] += 1
+
+    def crypt(self, text, enc=True):
+        crypted = ""
+        for char in text:
+            curr = char
+            turn = 1
+            curr, fThrough = self.reroute(curr)
+            for rotor in range(len(self.rotors)):
+                curr = self.rotor_f(curr, rotor)
+            curr = self.reflect(curr)
+            for rotor in range((len(self.rotors) - 1), -1, -1):
+                curr = self.rotor_b(curr, rotor)
+            curr, bThrough = self.reroute(curr)
+            if (enc and fThrough) or ((not enc) and bThrough):
+                turn = 2
+            self.add_rotation(0, quantity=turn)
+
+            crypted += curr
+
+        return crypted
+
 
 if __name__ == '__main__':
     yenigma = Yenigma()
+    yenigma.create_rotors(((1, 2, 3), 1))
+    print(yenigma.crypt("pleasework"))
     while True:
         try:
             print(eval(input()))
