@@ -25,6 +25,7 @@ class Yenigma:
 
         for ring in range(len(keys[0])):
             self.create_rotor(ring, keys[0][ring])
+        self.create_reflector(keys[1])
 
     def create_rotor(self, ring, key):
         self.randomish.set_seed(key)
@@ -44,15 +45,13 @@ class Yenigma:
         temp_reflector = dict()
         temp_char = list(self.ring_chars)
         while len(temp_char):
-            a = self.randomish.random_int(len(temp_char))
-            b = self.randomish.random_int(len(temp_char))
+            rand = (self.randomish.random_int(len(temp_char)), self.randomish.random_int(len(temp_char)))
+            a, b = min(rand), max(rand)
             temp_reflector[temp_char[a]] = temp_char[b]
             temp_reflector[temp_char[b]] = temp_char[a]
             del temp_char[a]
-            try:
-                del temp_char[b]
-            except IndexError:
-                pass
+            if a != b:
+                del temp_char[b-1]
         self.reflector = temp_reflector
 
         return
@@ -76,16 +75,15 @@ class Yenigma:
             self.rotate(rotor, quantity=keys[rotor])
             self.add_rotation(rotor, keys[rotor])
 
-    def rotor_f(self, char, ring):  # PROBLEM IS HERE
-        loc = self.ring_chars.find(char)
-        if loc == -1:
-            return
-        else:
-            return self.rotors[ring][loc]
-
-    def rotor_b(self, char, ring):  # PROBLEM IS HERE
+    def rotor_f(self, char, ring):
         if char in self.ring_chars:
             return self.rotors[ring][self.ring_chars.index(char)]
+        else:
+            return
+
+    def rotor_b(self, char, ring):
+        if char in self.ring_chars:
+            return self.ring_chars[self.rotors[ring].index(char)]
         else:
             return
 
@@ -145,7 +143,7 @@ class Yenigma:
 if __name__ == '__main__':
     yenigma = Yenigma()
     yenigma.create_rotors(((1, 2, 3), 1))
-    print(yenigma.crypt("pleasework"))
+    print(yenigma.crypt("qefqfrshmu"))
     while True:
         try:
             print(eval(input()))
