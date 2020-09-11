@@ -142,8 +142,6 @@ class Yenigma:
 
 if __name__ == '__main__':
     yenigma = Yenigma()
-    yenigma.create_rotors(((1, 2, 3), 1))
-    print(yenigma.crypt("qefqfrshmu"))
     while True:
         try:
             print(eval(input()))
